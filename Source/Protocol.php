@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 /**
  * Hoa
  *
@@ -36,12 +34,19 @@ declare(strict_types=1);
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-namespace Hoa\Protocol;
+namespace igorora\Protocol;
 
-use Hoa\Consistency;
+use igorora\Protocol\Node\Node;
+use igorora\Protocol\Node\Library;
+use igorora\Consistency\Consistency;
 
 /**
- * Root of the `hoa://` protocol.
+ * Class \igorora\Protocol\Protocol.
+ *
+ * Root of the `igorora://` protocol.
+ *
+ * @copyright  Copyright © 2007-2017 Hoa community
+ * @license    New BSD License
  */
 class Protocol extends Node
 {
@@ -50,22 +55,27 @@ class Protocol extends Node
      *
      * @const string
      */
-    public const NO_RESOLUTION = '/hoa/flatland';
+    const NO_RESOLUTION = '/igorora/flatland';
 
     /**
      * Singleton.
+     *
+     * @var \igorora\Protocol\Protocol
      */
     private static $_instance = null;
 
     /**
      * Cache of resolver.
+     *
+     * @var array
      */
-    private static $_cache    = [];
+    private static $_cache = [];
 
 
 
     /**
      * Initialize the protocol.
+     *
      */
     public function __construct()
     {
@@ -76,9 +86,11 @@ class Protocol extends Node
 
     /**
      * Singleton.
-     * To use the `hoa://` protocol shared by everyone.
+     * To use the `igorora://` protocol shared by everyone.
+     *
+     * @return  \igorora\Protocol\Protocol
      */
-    public static function getInstance(): Protocol
+    public static function getInstance()
     {
         if (null === static::$_instance) {
             static::$_instance = new static();
@@ -89,15 +101,15 @@ class Protocol extends Node
 
     /**
      * Initialize the protocol.
+     *
+     * @return  void
      */
-    protected function initialize(): void
+    protected function initialize()
     {
-        $root  = dirname(__DIR__, 3);
-        $argv0 = realpath($_SERVER['argv'][0]);
-
-        $cwd =
+        $root = dirname(dirname(__DIR__));
+        $cwd  =
             'cli' === PHP_SAPI
-                ? false !== $argv0 ? dirname($argv0) : ''
+                ? dirname(realpath($_SERVER['argv'][0]))
                 : getcwd();
 
         $this[] = new Node(
@@ -137,23 +149,27 @@ class Protocol extends Node
             ]
         );
 
-        $this[] = new Node\Library(
+        $this[] = new Library(
             'Library',
             $root . DS . 'Hoathis' . DS . RS .
             $root . DS . 'Hoa' . DS
         );
+
+        return;
     }
 
     /**
-     * Resolve (unfold) an `hoa://` path to its real resource.
+     * Resolve (unfold) an `igorora://` path to its real resource.
      *
-     * If `$exists` is set to `true`, try to find the first that exists,
-     * otherwise returns the first solution.  If `$unfold` is set to `true`,
-     * it returns all the paths.
+     * @param   string  $path      Path to resolve.
+     * @param   bool    $exists    If `true`, try to find the first that exists,
+     *                             else return the first solution.
+     * @param   bool    $unfold    Return all solutions instead of one.
+     * @return  mixed
      */
-    public function resolve(string $path, bool $exists = true, bool $unfold = false)
+    public function resolve($path, $exists = true, $unfold = false)
     {
-        if (substr($path, 0, 6) !== 'hoa://') {
+        if (substr($path, 0, 6) !== 'igorora://') {
             if (true === is_dir($path)) {
                 $path = rtrim($path, '/\\');
 
@@ -221,14 +237,18 @@ class Protocol extends Node
 
     /**
      * Clear the cache.
+     *
+     * @return  void
      */
-    public static function clearCache(): void
+    public static function clearCache()
     {
         self::$_cache = [];
+
+        return;
     }
 }
 
 /**
  * Flex entity.
  */
-Consistency::flexEntity(Protocol::class);
+Consistency::flexEntity('igorora\Protocol\Protocol');

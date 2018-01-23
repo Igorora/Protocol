@@ -36,22 +36,22 @@ declare(strict_types=1);
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-namespace Hoa\Protocol\Test\Unit;
+namespace igorora\Protocol\Test\Unit;
 
-use Hoa\Protocol\Exception as SUT;
-use Hoa\Test;
+use igorora\Protocol\Exception as SUT;
+use igorora\Test;
 
 /**
  * Test suite of the exception.
  */
 class Exception extends Test\Unit\Suite
 {
-    public function case_hoa_exception(): void
+    public function case_igorora_exception(): void
     {
         $this
             ->when($result = new SUT('foo', 0))
             ->then
                 ->object($result)
-                    ->isInstanceOf(\Hoa\Exception\Exception::class);
+                    ->isInstanceOf(\igorora\Exception\Exception::class);
     }
 }

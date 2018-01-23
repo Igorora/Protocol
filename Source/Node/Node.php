@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 /**
  * Hoa
  *
@@ -36,28 +34,41 @@ declare(strict_types=1);
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-namespace Hoa\Protocol\Node;
+namespace igorora\Protocol\Node;
 
-use Hoa\Consistency;
-use Hoa\Protocol;
+use ArrayIterator;
+use igorora\protocol\Exception;
+use igorora\protocol\Protocol;
+use igorora\consistency\Consistency;
 
 /**
- * Abstract class for all `hoa://`'s nodes.
+ * Class \igorora\Protocol\Node\Node.
+ *
+ * Abstract class for all `igorora://`'s nodes.
+ *
+ * @copyright  Copyright © 2007-2017 Hoa community
+ * @license    New BSD License
  */
 class Node implements \ArrayAccess, \IteratorAggregate
 {
     /**
      * Node's name.
+     *
+     * @var string
      */
     protected $_name       = null;
 
     /**
      * Path for the `reach` method.
+     *
+     * @var string
      */
     protected $_reach      = null;
 
     /**
      * Children of the node.
+     *
+     * @var array
      */
     private $_children     = [];
 
@@ -68,8 +79,12 @@ class Node implements \ArrayAccess, \IteratorAggregate
      * If it is not a data object (i.e. if it does not extend this class to
      * overload the `$_name` attribute), we can set the `$_name` attribute
      * dynamically. This is useful to create a node on-the-fly.
+     *
+     * @param   string  $name        Node's name.
+     * @param   string  $reach       Path for the `reach` method.
+     * @param   array   $children    Node's children.
      */
-    public function __construct(string $name = null, string $reach = null, array $children = [])
+    public function __construct($name = null, $reach = null, array $children = [])
     {
         if (null !== $name) {
             $this->_name = $name;
@@ -88,11 +103,17 @@ class Node implements \ArrayAccess, \IteratorAggregate
 
     /**
      * Add a node.
+     *
+     * @param   string                  $name    Node's name. If null, will be
+     *                                           set to name of `$node`.
+     * @param   \igorora\Protocol\Protocol  $node    Node to add.
+     * @return  void
+     * @throws  \igorora\Protocol\Exception
      */
-    public function offsetSet($name, $node): void
+    public function offsetSet($name, $node) : void
     {
         if (!($node instanceof self)) {
-            throw new Protocol\Exception(
+            throw new Exception(
                 'Protocol node must extend %s.',
                 0,
                 __CLASS__
@@ -104,22 +125,28 @@ class Node implements \ArrayAccess, \IteratorAggregate
         }
 
         if (empty($name)) {
-            throw new Protocol\Exception(
-                'Cannot add a node to the `hoa://` protocol without a name.',
+            throw new Exception(
+                'Cannot add a node to the `igorora://` protocol without a name.',
                 1
             );
         }
 
         $this->_children[$name] = $node;
+
+        return;
     }
 
     /**
      * Get a specific node.
+     *
+     * @param   string  $name    Node's name.
+     * @return  \igorora\Protocol\Protocol
+     * @throws  \igorora\Protocol\Exception
      */
-    public function offsetGet($name): self
+    public function offsetGet($name) : mixed
     {
         if (!isset($this[$name])) {
-            throw new Protocol\Exception(
+            throw new Exception(
                 'Node %s does not exist.',
                 2,
                 $name
@@ -131,27 +158,40 @@ class Node implements \ArrayAccess, \IteratorAggregate
 
     /**
      * Check if a node exists.
+     *
+     * @param   string  $name    Node's name.
+     * @return  bool
      */
-    public function offsetExists($name): bool
+    public function offsetExists($name) : bool
     {
         return true === array_key_exists($name, $this->_children);
     }
 
     /**
      * Remove a node.
+     *
+     * @param   string  $name    Node's name to remove.
+     * @return  void
      */
-    public function offsetUnset($name): void
+    public function offsetUnset($name) : void
     {
         unset($this->_children[$name]);
+
+        return;
     }
 
     /**
      * Resolve a path, i.e. iterate the nodes tree and reach the queue of
      * the path.
+     *
+     * @param   string  $path            Path to resolve.
+     * @param   array   &$accumulator    Combination of all possibles paths.
+     * @param   string  $id              ID.
+     * @return  mixed
      */
-    protected function _resolve(string $path, &$accumulator, string $id = null)
+    protected function _resolve($path, &$accumulator, $id = null)
     {
-        if (substr($path, 0, 6) == 'hoa://') {
+        if (substr($path, 0, 6) == 'igorora://') {
             $path = substr($path, 6);
         }
 
@@ -206,13 +246,13 @@ class Node implements \ArrayAccess, \IteratorAggregate
 
     /**
      * Resolve choices, i.e. a reach value has a “;”.
+     *
+     * @param   string  $reach           Reach value.
+     * @param   array   &$accumulator    Combination of all possibles paths.
+     * @return  void
      */
-    protected function _resolveChoice(?string $reach, ?array &$accumulator)
+    protected function _resolveChoice($reach, array &$accumulator)
     {
-        if (null === $reach) {
-            $reach = '';
-        }
-
         if (empty($accumulator)) {
             $accumulator = explode(RS, $reach);
 
@@ -261,8 +301,12 @@ class Node implements \ArrayAccess, \IteratorAggregate
     /**
      * Queue of the node.
      * Generic one. Must be overrided in children classes.
+     *
+     * @param   string  $queue    Queue of the node (generally a filename,
+     *                            with probably a query).
+     * @return  mixed
      */
-    public function reach(string $queue = null)
+    public function reach($queue = null) : mixed
     {
         return empty($queue) ? $this->_reach : $queue;
     }
@@ -270,10 +314,14 @@ class Node implements \ArrayAccess, \IteratorAggregate
     /**
      * ID of the component.
      * Generic one. Should be overrided in children classes.
+     *
+     * @param   string  $id    ID of the component.
+     * @return  mixed
+     * @throws  \igorora\Protocol\Exception
      */
-    public function reachId(string $id)
+    public function reachId($id) : mixed
     {
-        throw new Protocol\Exception(
+        throw new Exception(
             'The node %s has no ID support (tried to reach #%s).',
             4,
             [$this->getName(), $id]
@@ -282,8 +330,11 @@ class Node implements \ArrayAccess, \IteratorAggregate
 
     /**
      * Set a new reach value.
+     *
+     * @param   string  $reach    Reach value.
+     * @return  string
      */
-    public function setReach(string $reach): ?string
+    public function setReach($reach)
     {
         $old          = $this->_reach;
         $this->_reach = $reach;
@@ -293,40 +344,50 @@ class Node implements \ArrayAccess, \IteratorAggregate
 
     /**
      * Get node's name.
+     *
+     * @return  string
      */
-    public function getName(): ?string
+    public function getName()
     {
         return $this->_name;
     }
 
     /**
      * Get reach's root.
+     *
+     * @return  string
      */
-    protected function getReach(): ?string
+    protected function getReach()
     {
         return $this->_reach;
     }
 
     /**
      * Get an iterator.
+     *
+     * @return  \ArrayIterator
      */
-    public function getIterator(): \ArrayIterator
+    public function getIterator() : ArrayIterator
     {
         return new \ArrayIterator($this->_children);
     }
 
     /**
      * Get root the protocol.
+     *
+     * @return  \igorora\Protocol\Protocol
      */
-    public static function getRoot(): Protocol\Protocol
+    public static function getRoot()
     {
         return Protocol::getInstance();
     }
 
     /**
      * Print a tree of component.
+     *
+     * @return  string
      */
-    public function __toString(): string
+    public function __toString()
     {
         static $i = 0;
 
@@ -345,4 +406,4 @@ class Node implements \ArrayAccess, \IteratorAggregate
 /**
  * Flex entity.
  */
-Consistency::flexEntity(Node::class);
+Consistency::flexEntity('igorora\Protocol\Node\Node');

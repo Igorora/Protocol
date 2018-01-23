@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 /**
  * Hoa
  *
@@ -36,17 +34,26 @@ declare(strict_types=1);
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-namespace Hoa\Protocol\Node;
+namespace igorora\Protocol\Node;
 
 /**
- * The `hoa://Library/` node.
+ * Class \igorora\Protocol\Node\Library.
+ *
+ * `igorora://Library/` node.
+ *
+ * @copyright  Copyright © 2007-2017 Hoa community
+ * @license    New BSD License
  */
 class Library extends Node
 {
     /**
      * Queue of the component.
+     *
+     * @param   string  $queue    Queue of the component (generally, a filename,
+     *                            with probably a query).
+     * @return  mixed
      */
-    public function reach(string $queue = null)
+    public function reach($queue = null) : mixed
     {
         if (!WITH_COMPOSER) {
             return parent::reach($queue);
@@ -68,7 +75,7 @@ class Library extends Node
                 $out[] = "\r" . $part . strtolower($head) . $queue;
             }
 
-            $out[] = "\r" . dirname(__DIR__, 5) . $queue;
+            $out[] = "\r" . dirname(dirname(dirname(dirname(__DIR__)))) . $queue;
 
             return implode(RS, $out);
         }

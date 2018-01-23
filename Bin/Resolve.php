@@ -36,13 +36,13 @@ declare(strict_types=1);
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-namespace Hoa\Protocol\Bin;
+namespace igorora\Protocol\Bin;
 
-use Hoa\Console;
-use Hoa\Protocol;
+use igorora\Console;
+use igorora\Protocol;
 
 /**
- * This command resolves some `hoa://` paths.
+ * This command resolves some `igorora://` paths.
  */
 class Resolve extends Console\Dispatcher\Kit
 {
@@ -113,7 +113,7 @@ class Resolve extends Console\Dispatcher\Kit
             $protocol = Protocol::getInstance();
             $foo      = substr($path, 0, 6);
 
-            if ('hoa://' !== $foo) {
+            if ('igorora://' !== $foo) {
                 return 1;
             }
 
@@ -170,4 +170,4 @@ class Resolve extends Console\Dispatcher\Kit
 }
 
 __halt_compiler();
-Resolve `hoa://` paths.
+Resolve `igorora://` paths.

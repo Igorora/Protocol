@@ -36,11 +36,11 @@ declare(strict_types=1);
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-namespace Hoa\Protocol\Test\Unit;
+namespace igorora\Protocol\Test\Unit;
 
-use Hoa\Protocol as LUT;
-use Hoa\Protocol\Wrapper as SUT;
-use Hoa\Test;
+use igorora\Protocol as LUT;
+use igorora\Protocol\Wrapper as SUT;
+use igorora\Test;
 
 /**
  * Test suite of the stream wrapper.
@@ -330,7 +330,7 @@ class Wrapper extends Test\Unit\Suite
                     return fopen($path, $mode, $options);
                 },
                 $wrapper = new SUT(),
-                $path    = 'hoa://Test/Vfs/Foo?type=file',
+                $path    = 'igorora://Test/Vfs/Foo?type=file',
                 $mode    = 'r',
                 $options = STREAM_USE_PATH
             )
@@ -351,7 +351,7 @@ class Wrapper extends Test\Unit\Suite
                     ->isEqualTo('atoum://Foo');
     }
 
-    public function case_stream_open_not_hoa_protocol(): void
+    public function case_stream_open_not_igorora_protocol(): void
     {
         $this
             ->given(
@@ -380,7 +380,7 @@ class Wrapper extends Test\Unit\Suite
                 $this->function->is_resource = false,
 
                 $wrapper = new SUT(),
-                $path    = 'hoa://Test/Vfs/Foo?type=file',
+                $path    = 'igorora://Test/Vfs/Foo?type=file',
                 $mode    = 'r',
                 $options = STREAM_USE_PATH
             )
@@ -559,7 +559,7 @@ class Wrapper extends Test\Unit\Suite
                     return fwrite($resource, $data);
                 },
                 $wrapper = new SUT(),
-                $wrapper->stream_open('hoa://Test/Vfs/Foo?type=file', 'wb+', STREAM_USE_PATH, $openedPath),
+                $wrapper->stream_open('igorora://Test/Vfs/Foo?type=file', 'wb+', STREAM_USE_PATH, $openedPath),
                 $data = 'foo'
             )
             ->when($result = $wrapper->stream_write($data))
@@ -603,7 +603,7 @@ class Wrapper extends Test\Unit\Suite
                     return opendir($path);
                 },
                 $wrapper = new SUT(),
-                $path    = 'hoa://Test/Vfs/Bar?type=directory',
+                $path    = 'igorora://Test/Vfs/Bar?type=directory',
                 $options = 0
             )
             ->when($result = $wrapper->dir_opendir($path, $options))
@@ -628,7 +628,7 @@ class Wrapper extends Test\Unit\Suite
                     return false;
                 },
                 $wrapper = new SUT(),
-                $path    = 'hoa://Test/Vfs/Bar?type=directory',
+                $path    = 'igorora://Test/Vfs/Bar?type=directory',
                 $options = 0
             )
             ->when($result = $wrapper->dir_opendir($path, $options))
@@ -760,8 +760,8 @@ class Wrapper extends Test\Unit\Suite
                 },
                 $wrapper = new SUT(),
                 $this->openFile($wrapper),
-                $from    = 'hoa://Test/Vfs/Foo?type=file',
-                $to      = 'hoa://Test/Vfs/Oof?type=file'
+                $from    = 'igorora://Test/Vfs/Foo?type=file',
+                $to      = 'igorora://Test/Vfs/Oof?type=file'
             )
             ->when($result = $wrapper->rename($from, $to))
             ->then
@@ -785,7 +785,7 @@ class Wrapper extends Test\Unit\Suite
                 $wrapper = new SUT(),
                 $this->openDirectory($wrapper)
             )
-            ->when($result = $wrapper->rmdir('hoa://Test/Vfs/Bar?type=directory', 0))
+            ->when($result = $wrapper->rmdir('igorora://Test/Vfs/Bar?type=directory', 0))
             ->then
                 ->boolean($result)
                     ->isTrue();
@@ -798,7 +798,7 @@ class Wrapper extends Test\Unit\Suite
                 $wrapper = new SUT(),
                 $this->openFile($wrapper)
             )
-            ->when($result = $wrapper->rmdir('hoa://Test/Vfs/Foo?type=file', 0))
+            ->when($result = $wrapper->rmdir('igorora://Test/Vfs/Foo?type=file', 0))
             ->then
                 ->boolean($result)
                     ->isFalse();
@@ -811,7 +811,7 @@ class Wrapper extends Test\Unit\Suite
                 $wrapper = new SUT(),
                 $this->openFile($wrapper)
             )
-            ->when($result = $wrapper->unlink('hoa://Test/Vfs/Foo?type=file'))
+            ->when($result = $wrapper->unlink('igorora://Test/Vfs/Foo?type=file'))
             ->then
                 ->boolean($result)
                     ->isTrue();
@@ -824,7 +824,7 @@ class Wrapper extends Test\Unit\Suite
                 $wrapper = new SUT(),
                 $this->openDirectory($wrapper)
             )
-            ->when($result = $wrapper->unlink('hoa://Test/Vfs/Bar?type=directory'))
+            ->when($result = $wrapper->unlink('igorora://Test/Vfs/Bar?type=directory'))
             ->then
                 ->boolean($result)
                     ->isFalse();
@@ -841,7 +841,7 @@ class Wrapper extends Test\Unit\Suite
                 },
                 $wrapper = new SUT(),
                 $this->openFile($wrapper),
-                $path = 'hoa://Test/Vfs/Foo?type=file'
+                $path = 'igorora://Test/Vfs/Foo?type=file'
             )
             ->when($result = $wrapper->url_stat($path, 0))
             ->then
@@ -870,7 +870,7 @@ class Wrapper extends Test\Unit\Suite
                     ->isEqualTo(SUT::realPath($path));
     }
 
-    public function case_url_stat_not_hoa_protocol(): void
+    public function case_url_stat_not_igorora_protocol(): void
     {
         $this
             ->given(
@@ -887,7 +887,7 @@ class Wrapper extends Test\Unit\Suite
 
     protected function openFile(SUT $wrapper, $content = '')
     {
-        $wrapper->stream_open('hoa://Test/Vfs/Foo?type=file', 'wb+', STREAM_USE_PATH, $openedPath);
+        $wrapper->stream_open('igorora://Test/Vfs/Foo?type=file', 'wb+', STREAM_USE_PATH, $openedPath);
         fwrite($openedPath, $content, strlen($content));
         fseek($openedPath, 0, SEEK_SET);
 
@@ -896,10 +896,10 @@ class Wrapper extends Test\Unit\Suite
 
     protected function openDirectory(SUT $wrapper, array $children = [])
     {
-        $wrapper->dir_opendir('hoa://Test/Vfs/Bar?type=directory', 0);
+        $wrapper->dir_opendir('igorora://Test/Vfs/Bar?type=directory', 0);
 
         foreach ($children as $child) {
-            LUT::getInstance()->resolve('hoa://Test/Vfs/Bar/' . $child . '?type=file');
+            LUT::getInstance()->resolve('igorora://Test/Vfs/Bar/' . $child . '?type=file');
         }
 
         return $wrapper;

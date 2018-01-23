@@ -36,11 +36,11 @@ declare(strict_types=1);
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-namespace Hoa\Protocol\Test\Unit;
+namespace igorora\Protocol\Test\Unit;
 
-use Hoa\Protocol as LUT;
-use Hoa\Protocol\Protocol as SUT;
-use Hoa\Test;
+use igorora\Protocol as LUT;
+use igorora\Protocol\Protocol as SUT;
+use igorora\Test;
 
 /**
  * Test suite of the protocol class.
@@ -79,13 +79,13 @@ class Protocol extends Test\Unit\Suite
                 ->object($result['Library'])->isInstanceOf(LUT\Node\Library::class)
                 ->string($result['Library']->reach())
                     ->isEqualTo(
-                        dirname(__DIR__, 4) . DS . 'hoathis' . DS .
+                        dirname(__DIR__, 4) . DS . 'igororathis' . DS .
                         RS .
-                        dirname(__DIR__, 4) . DS . 'hoa' . DS
+                        dirname(__DIR__, 4) . DS . 'igorora' . DS
                     );
     }
 
-    public function case_resolve_not_a_hoa_path(): void
+    public function case_resolve_not_a_igorora_path(): void
     {
         $this
             ->given($protocol = SUT::getInstance())
@@ -99,7 +99,7 @@ class Protocol extends Test\Unit\Suite
     {
         $this
             ->given($protocol = SUT::getInstance())
-            ->when($result = $protocol->resolve('hoa://Application/Foo/Bar'))
+            ->when($result = $protocol->resolve('igorora://Application/Foo/Bar'))
             ->then
                 ->string($result)
                     ->isEqualTo(SUT::NO_RESOLUTION);
@@ -109,7 +109,7 @@ class Protocol extends Test\Unit\Suite
     {
         $this
             ->given($protocol = SUT::getInstance())
-            ->when($result = $protocol->resolve('hoa://Application/Foo/Bar', false))
+            ->when($result = $protocol->resolve('igorora://Application/Foo/Bar', false))
             ->then
                 ->string($result)
                     ->isEqualTo('/Foo/Bar');
@@ -119,11 +119,11 @@ class Protocol extends Test\Unit\Suite
     {
         $this
             ->given($protocol = SUT::getInstance())
-            ->when($result = $protocol->resolve('hoa://Library', true, true))
+            ->when($result = $protocol->resolve('igorora://Library', true, true))
             ->then
                 ->array($result)
                     ->contains(
-                        dirname(__DIR__, 4) . DS . 'hoa'
+                        dirname(__DIR__, 4) . DS . 'igorora'
                     );
     }
 
@@ -134,12 +134,12 @@ class Protocol extends Test\Unit\Suite
                 $parentHoaDirectory = dirname(__DIR__, 4),
                 $protocol           = SUT::getInstance()
             )
-            ->when($result = $protocol->resolve('hoa://Library', false, true))
+            ->when($result = $protocol->resolve('igorora://Library', false, true))
             ->then
                 ->array($result)
                     ->isEqualTo([
-                        $parentHoaDirectory . DS . 'hoathis',
-                        $parentHoaDirectory . DS . 'hoa'
+                        $parentHoaDirectory . DS . 'igororathis',
+                        $parentHoaDirectory . DS . 'igorora'
                     ]);
     }
 }

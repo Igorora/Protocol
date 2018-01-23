@@ -1,14 +1,14 @@
 <p align="center">
-  <img src="https://static.hoa-project.net/Image/Hoa.svg" alt="Hoa" width="250px" />
+  <img src="https://static.igorora-project.net/Image/Hoa.svg" alt="Hoa" width="250px" />
 </p>
 
 ---
 
 <p align="center">
-  <a href="https://travis-ci.org/hoaproject/Protocol"><img src="https://img.shields.io/travis/hoaproject/Protocol/master.svg" alt="Build status" /></a>
-  <a href="https://coveralls.io/github/hoaproject/Protocol?branch=master"><img src="https://img.shields.io/coveralls/hoaproject/Protocol/master.svg" alt="Code coverage" /></a>
-  <a href="https://packagist.org/packages/hoa/protocol"><img src="https://img.shields.io/packagist/dt/hoa/protocol.svg" alt="Packagist" /></a>
-  <a href="https://hoa-project.net/LICENSE"><img src="https://img.shields.io/packagist/l/hoa/protocol.svg" alt="License" /></a>
+  <a href="https://travis-ci.org/igororaproject/Protocol"><img src="https://img.shields.io/travis/igororaproject/Protocol/master.svg" alt="Build status" /></a>
+  <a href="https://coveralls.io/github/igororaproject/Protocol?branch=master"><img src="https://img.shields.io/coveralls/igororaproject/Protocol/master.svg" alt="Code coverage" /></a>
+  <a href="https://packagist.org/packages/igorora/protocol"><img src="https://img.shields.io/packagist/dt/igorora/protocol.svg" alt="Packagist" /></a>
+  <a href="https://igorora-project.net/LICENSE"><img src="https://img.shields.io/packagist/l/igorora/protocol.svg" alt="License" /></a>
 </p>
 <p align="center">
   Hoa is a <strong>modular</strong>, <strong>extensible</strong> and
@@ -16,30 +16,30 @@
   Moreover, Hoa aims at being a bridge between industrial and research worlds.
 </p>
 
-# Hoa\Protocol
+# igorora\Protocol
 
-[![Help on IRC](https://img.shields.io/badge/help-%23hoaproject-ff0066.svg)](https://webchat.freenode.net/?channels=#hoaproject)
-[![Help on Gitter](https://img.shields.io/badge/help-gitter-ff0066.svg)](https://gitter.im/hoaproject/central)
-[![Documentation](https://img.shields.io/badge/documentation-hack_book-ff0066.svg)](https://central.hoa-project.net/Documentation/Library/Protocol)
-[![Board](https://img.shields.io/badge/organisation-board-ff0066.svg)](https://waffle.io/hoaproject/protocol)
+[![Help on IRC](https://img.shields.io/badge/help-%23igororaproject-ff0066.svg)](https://webchat.freenode.net/?channels=#igororaproject)
+[![Help on Gitter](https://img.shields.io/badge/help-gitter-ff0066.svg)](https://gitter.im/igororaproject/central)
+[![Documentation](https://img.shields.io/badge/documentation-hack_book-ff0066.svg)](https://central.igorora-project.net/Documentation/Library/Protocol)
+[![Board](https://img.shields.io/badge/organisation-board-ff0066.svg)](https://waffle.io/igororaproject/protocol)
 
-This library provides the `hoa://` protocol, which is a way to abstract resource
+This library provides the `igorora://` protocol, which is a way to abstract resource
 accesses.
 
-[Learn more](https://central.hoa-project.net/Documentation/Library/Protocol).
+[Learn more](https://central.igorora-project.net/Documentation/Library/Protocol).
 
 ## Installation
 
 With [Composer](https://getcomposer.org/), to include this library into
 your dependencies, you need to
-require [`hoa/protocol`](https://packagist.org/packages/hoa/protocol):
+require [`igorora/protocol`](https://packagist.org/packages/igorora/protocol):
 
 ```sh
-$ composer require hoa/protocol '~2.0'
+$ composer require igorora/protocol '~2.0'
 ```
 
 For more installation procedures, please read [the Source
-page](https://hoa-project.net/Source.html).
+page](https://igorora-project.net/Source.html).
 
 ## Testing
 
@@ -52,25 +52,25 @@ $ composer install
 Then, to run all the test suites:
 
 ```sh
-$ vendor/bin/hoa test:run
+$ vendor/bin/igorora test:run
 ```
 
 For more information, please read the [contributor
-guide](https://hoa-project.net/Literature/Contributor/Guide.html).
+guide](https://igorora-project.net/Literature/Contributor/Guide.html).
 
 ## Quick usage
 
 We propose a quick overview of how to list the current tree of the protocol, how
-to resolve a `hoa://` path and finally how to add a new node in this tree.
+to resolve a `igorora://` path and finally how to add a new node in this tree.
 
 ### Explore resources
 
-First of all, to get the instance of the `hoa://` protocol, you should use the
-static `getInstance` method on the `Hoa\Protocol\Protocol` class which
+First of all, to get the instance of the `igorora://` protocol, you should use the
+static `getInstance` method on the `igorora\Protocol\Protocol` class which
 represents the root of the protocol tree:
 
 ```php
-echo Hoa\Protocol\Protocol::getInstance();
+echo igorora\Protocol\Protocol::getInstance();
 
 /**
  * Might output:
@@ -102,23 +102,23 @@ We see that there is 3 “sub-roots”:
      files, locales, databases, tests etc.
   3. `Library`, representing all Hoa's libraries.
 
-Thus, `hoa://Library/Protocol/README.md` represents the abstract path to this
+Thus, `igorora://Library/Protocol/README.md` represents the abstract path to this
 real file. No matter where you are on the disk, this path will always be valid
 and pointing to this file. This becomes useful in an application where you would
 like to access to a configuration file like this
-`hoa://Data/Etc/Configuration/Foo.php`: Maybe the `Data` directory does not
+`igorora://Data/Etc/Configuration/Foo.php`: Maybe the `Data` directory does not
 exist, maybe the `Etc` or `Configuration` directories do not exist neither, but
-each node of the `hoa://` tree resolves to a valid directory which contains your
+each node of the `igorora://` tree resolves to a valid directory which contains your
 `Foo.php` configuration file. This is an **abstract path for a resource**.
 
 ### Resolving a path
 
 We can either resolve a path by using the global `resolve` function or the
-`Hoa\Protocol\Protocol::resolve` method:
+`igorora\Protocol\Protocol::resolve` method:
 
 ```php
 var_dump(
-    resolve('hoa://Library/Protocol/README.md')
+    resolve('igorora://Library/Protocol/README.md')
 );
 
 /**
@@ -129,23 +129,23 @@ var_dump(
 
 ### Register new nodes in the tree
 
-The `hoa://` protocol is a tree. Thus, to add a new “component”/“directory” in
+The `igorora://` protocol is a tree. Thus, to add a new “component”/“directory” in
 this tree, we must create a node and register it as a child of an existing node.
 Thus, in the following example we will create a `Usb` node, pointing to the
 `/Volumes` directory, and we will add it as a new sub-root, so an immediate
 child of the root:
 
 ```php
-$protocol   = Hoa\Protocol\Protocol::getInstance();
-$protocol[] = new Hoa\Protocol\Node('Usb', '/Volumes/');
+$protocol   = igorora\Protocol\Protocol::getInstance();
+$protocol[] = new igorora\Protocol\Node('Usb', '/Volumes/');
 ```
 
-Here we are. Now, resolving `hoa://Usb/StickA` might point to `/Volumes/StickA`
+Here we are. Now, resolving `igorora://Usb/StickA` might point to `/Volumes/StickA`
 (if exists):
 
 ```php
 var_dump(
-    resolve('hoa://Usb/StickA')
+    resolve('igorora://Usb/StickA')
 );
 
 /**
@@ -157,34 +157,34 @@ var_dump(
 ## Documentation
 
 The
-[hack book of `Hoa\Protocol`](https://central.hoa-project.net/Documentation/Library/Protocol)
+[hack book of `igorora\Protocol`](https://central.igorora-project.net/Documentation/Library/Protocol)
 contains detailed information about how to use this library and how it works.
 
 To generate the documentation locally, execute the following commands:
 
 ```sh
-$ composer require --dev hoa/devtools
-$ vendor/bin/hoa devtools:documentation --open
+$ composer require --dev igorora/devtools
+$ vendor/bin/igorora devtools:documentation --open
 ```
 
 More documentation can be found on the project's website:
-[hoa-project.net](https://hoa-project.net/).
+[igorora-project.net](https://igorora-project.net/).
 
 ## Getting help
 
 There are mainly two ways to get help:
 
-  * On the [`#hoaproject`](https://webchat.freenode.net/?channels=#hoaproject)
+  * On the [`#igororaproject`](https://webchat.freenode.net/?channels=#igororaproject)
     IRC channel,
-  * On the forum at [users.hoa-project.net](https://users.hoa-project.net).
+  * On the forum at [users.igorora-project.net](https://users.igorora-project.net).
 
 ## Contribution
 
 Do you want to contribute? Thanks! A detailed [contributor
-guide](https://hoa-project.net/Literature/Contributor/Guide.html) explains
+guide](https://igorora-project.net/Literature/Contributor/Guide.html) explains
 everything you need to know.
 
 ## License
 
 Hoa is under the New BSD License (BSD-3-Clause). Please, see
-[`LICENSE`](https://hoa-project.net/LICENSE) for details.
+[`LICENSE`](https://igorora-project.net/LICENSE) for details.

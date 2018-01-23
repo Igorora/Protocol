@@ -36,10 +36,10 @@ declare(strict_types=1);
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-namespace Hoa\Protocol\Test\Unit\Node;
+namespace igorora\Protocol\Test\Unit\Node;
 
-use Hoa\Protocol\Node\Library as SUT;
-use Hoa\Test;
+use igorora\Protocol\Node\Library as SUT;
+use igorora\Test;
 
 /**
  * Test suite of the library node class.
